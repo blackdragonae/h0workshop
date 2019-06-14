@@ -8,6 +8,7 @@ from astropy.cosmology import FlatwCDM
 import emcee
 import numpy as np
 import corner
+import scipy.optimize as op
 
 def lnlike(theta, x, y, z, xerr, yerr, zerr):
     alpha, beta, h0 = theta
@@ -76,9 +77,21 @@ ialpha = 32.0
 ibeta = 5.0
 ih0 = 0.75
 
+# Maximum Likelihood
+nll = lambda *args: -lnlike(*args)[0]
+result = op.minimize(nll, [ialpha, ibeta, ih0],
+                args=(vx, vy, vz, vxErr, vyErr, vzErr)
+            )
+alpha_ml, beta_ml, h0_ml = result["x"]
+
+print 'max llq'
+print alpha_ml
+print beta_ml
+print h0_ml
+
 # MCMC
 ndim, nwalkers = 3, 100
-pos = [[ialpha, ibeta, ih0] + 1e-5*np.random.randn(ndim)
+pos = [[alpha_ml, beta_ml, h0_ml] + 1e-5*np.random.randn(ndim)
        for i in range(nwalkers)]
 
 sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob,
