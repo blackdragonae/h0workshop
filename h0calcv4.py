@@ -134,7 +134,8 @@ print len(vx)
 path = dpath+'results/trploth0.pdf'
 fig = corner.corner(samples,
                     labels=["$\\alpha$", "$\\beta$", "$h_0$", "$\Omega_m$"],
-                    truths=[alpha_mcmc[0],  beta_mcmc[0], h0_mcmc[0], Om_mcmc[0]],
+                    truths=[alpha_mcmc[0],  beta_mcmc[0], h0_mcmc[0],
+                            Om_mcmc[0]],
                     quantiles=[0.16, 0.84],
                     plot_contours='true',
                     levels=1.0 - np.exp(
