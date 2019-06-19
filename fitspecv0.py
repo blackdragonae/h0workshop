@@ -1,7 +1,6 @@
 # Reads and fit the redshift and flux from sdss spectra
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 
 import os
 from os import listdir
@@ -9,9 +8,6 @@ from os.path import isfile, join
 from astropy.io import fits
 from astropy import units as u
 from astropy.coordinates import SkyCoord
-from astropy.table import Table
-import numpy as np
-from scipy.signal import find_peaks
 
 def spread(spath):
     hdul = fits.open(spath)
@@ -21,8 +17,6 @@ def spread(spath):
     # print(repr(hdul[1].header))
     RA = hdul[1].header['RAOBJ']
     DEC = hdul[1].header['DECOBJ']
-    Z = hdul[1].header['Z']
-    ZERR = hdul[1].header['Z_ERR']
 
     vflux = data.flux
     vwave = data.wavelength
